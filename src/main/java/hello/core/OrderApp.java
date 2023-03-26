@@ -20,7 +20,7 @@ public class OrderApp {
         Member member = new Member(memberId, "memberA", Grade.VIP);
         memberService.join(member); // 넣어놔야 쓸 수 있으니까 조인으로 넣어 놓고
 
-        Order order = orderService.createOrder(memberId, "itemA", 10000);
+        Order order = orderService.createOrder(memberId, "itemA", 20000);
 
         System.out.println("order=" + order);
         System.out.println("order.calculatePrice=" + order.calculatePrice());
