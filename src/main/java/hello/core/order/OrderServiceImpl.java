@@ -26,7 +26,6 @@ public class OrderServiceImpl implements OrderService{
     }
 
     // 관련 생성자 생성
-
     @Override
     public Order createOrder(Long memberId, String itemName, int itemPrice){
         Member member = memberRepository.findById(memberId); // 회원정보 조회
@@ -35,5 +34,9 @@ public class OrderServiceImpl implements OrderService{
         return new Order(memberId, itemName, itemPrice, discountPrice);
     }
 
+    // 테스트 용도
+    public MemberRepository getMemberRepository(){
+        return memberRepository;
+    }
 }
 

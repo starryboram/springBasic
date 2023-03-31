@@ -17,6 +17,9 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfig {
     // 중복 코드 제거를 위해서 리팩터링 실행(윈도우: ctrl + alt + m)
     // 리팩터링 이유: 메서드명을 통해 어떤 일을 하는지 구체적으로 명확하게 보인다.
+
+    // @Bean memberService -> new MemoryMemberRepository()
+    // @Bean orderService -> new MemoryMemberRepository() : 싱글톤이 깨지는거 아닐까? 테스트 작성해보기
     @Bean // spring 컨테이너에다가 등록시켜주기
     public MemberService memberService(){
         return new MemberServiceImpl(memberRepository()); // 생성자 주입
