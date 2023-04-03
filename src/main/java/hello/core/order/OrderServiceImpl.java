@@ -27,8 +27,9 @@ public class OrderServiceImpl implements OrderService{
 * public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("fixDiscountPolicy") DiscountPolicy discountPolicy){
 *   this.memberRepository = memberRepository;
 *   this.discountPolicy = discountPolicy;
-* */
 
+여기서  @Qualifier("fixDiscountPolicy")대신 @MainDiscountPolicy붙여서 사용하면 된다. (직접 만든 어노테이션 사용하는 방법)
+ */
 
     /*
     생성자 주입: 생성자를 통해서 의존관계를 주입받는다.
