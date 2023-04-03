@@ -1,15 +1,13 @@
 package hello.core.order;
 
 import hello.core.discount.DiscountPolicy;
-import hello.core.discount.FixDiscountPolicy;
-import hello.core.discount.RateDiscountPolicy;
 import hello.core.member.Member;
 import hello.core.member.MemberRepository;
-import hello.core.member.MemoryMemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 @Component
+@RequiredArgsConstructor // final이 붙은 필드를 가지고 기본 생성자를 만들어준다.
 public class OrderServiceImpl implements OrderService{
 // 회원 찾고 + 할인 정책 찾아야 하니까 해당 내용 주입하고
     //private final MemberRepository memberRepository = new MemoryMemberRepository();
@@ -22,12 +20,6 @@ public class OrderServiceImpl implements OrderService{
     // 위의 코드도 DIP를 위반하지 않도록 바꿔주자
     private final MemberRepository memberRepository; // final을 붙인다 => 값이 무조건 있어야 한다.
     private final DiscountPolicy discountPolicy; // 인터페이스에만 의존하고 있고, 구체 클래스에 대해 의존하고 있지 않다.
-
-    @Autowired // 생성자 주입
-    public OrderServiceImpl(MemberRepository memberRepository, DiscountPolicy discountPolicy) {
-        this.memberRepository = memberRepository; // final 붙인 애가없으면 => 컴파일 오류난다.
-        this.discountPolicy = discountPolicy;
-    }
 
     /*
     생성자 주입: 생성자를 통해서 의존관계를 주입받는다.
