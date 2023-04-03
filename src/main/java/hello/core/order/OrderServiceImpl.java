@@ -20,6 +20,15 @@ public class OrderServiceImpl implements OrderService{
     // 위의 코드도 DIP를 위반하지 않도록 바꿔주자
     private final MemberRepository memberRepository; // final을 붙인다 => 값이 무조건 있어야 한다.
     private final DiscountPolicy discountPolicy; // 인터페이스에만 의존하고 있고, 구체 클래스에 대해 의존하고 있지 않다.
+/*
+아래의 생성자에서 discountpolicy 대신 rateDiscountPolicy 이렇게 붙여서 스프링 빈을 구분해주는 방법이 첫 번째 방법
+@Qualifier지정을 통해 어떤 빈을 조회하라고 지정해주는 방법이 두 번째 방법
+* @Autowired
+* public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("fixDiscountPolicy") DiscountPolicy discountPolicy){
+*   this.memberRepository = memberRepository;
+*   this.discountPolicy = discountPolicy;
+* */
+
 
     /*
     생성자 주입: 생성자를 통해서 의존관계를 주입받는다.
