@@ -3,6 +3,9 @@ package hello.core.lifecycle;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
+import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
+
 // 이 둘의 인터페이스는 스프링 전용 인터페이스이다 보니, 코드가 스프링 전용 인터페이스에 의존하게 된다.
 // 초기화, 소멸 메서드의 이름을 변경할 수 없고, 외부 라이브러리에 적용이 불가하다.
 public class NetworkClient {
@@ -29,15 +32,18 @@ public class NetworkClient {
          System.out.println("close: " + url);
      }
 
+     @PostConstruct
     public void init(){ // 빈 등록 초기화(내가 원하는대로 바꿀 수 있다)
         System.out.println("NetworkClient.init");
         connect();
         call("초기화 연결 메시지");
     }
 
+    @PreDestroy
     public void close(){ // 빈 소멸
         System.out.println("NetworkClient.close");
         disconnect();
     }
 }
+// 스프링의 빈 초기화, 소멸할 때에는 @PostConstruct, @PreDestroy로 쓰자. (단, 외부에서는 못 씀)
 
