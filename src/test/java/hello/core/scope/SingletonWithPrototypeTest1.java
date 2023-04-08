@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Scope;
 
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.inject.Provider;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -57,17 +58,30 @@ public class SingletonWithPrototypeTest1 {
         // 문제점: 프로로타입 빈을 주입 시점에만 새로 생성하는게 아니라, 사용할때마다 새로 생성해서 사용하고 싶다.
         // 싱글톤 빈은 생성시점에만 의존관계를 주입받기 때문에 프로토타입 빈이 새로 생성되기는 하지만, 싱글톤빈과 함께 계속 유지된다.
 
-        @Autowired
-        private ObjectProvider<PrototypeBean> prototypeBeanProvider;
-        // private ObjectFactory<PrototypeBean> prototypeBeanProvider; ObjectProvider대신 ObjectFactory 써도 된다.
-        /*
-        ObjectFactory: 기능이 단순, 별도의 라이브러리 필요 없음, 스프링에 의존
-        ObjectProvider: ObjectFactory 상속, 옵션, 스트림 처리등 편의 기능이 많고, 별도의 라이브러리 필요없음, 스프링에 의존
-        */
+//        @Autowired
+//        private ObjectProvider<PrototypeBean> prototypeBeanProvider;
+//        // private ObjectFactory<PrototypeBean> prototypeBeanProvider; ObjectProvider대신 ObjectFactory 써도 된다.
+//        /*
+//        ObjectFactory: 기능이 단순, 별도의 라이브러리 필요 없음, 스프링에 의존
+//        ObjectProvider: ObjectFactory 상속, 옵션, 스트림 처리등 편의 기능이 많고, 별도의 라이브러리 필요없음, 스프링에 의존
+//        */
+//
+//        public int logic(){
+//            PrototypeBean prototypeBean = prototypeBeanProvider.getObject(); // getObject 하면 이때 찾아서 호출
+//            // getObject를 통해서 항상 새로운 프로토타입 빈이 생성됨. Dependency Lookup(getObject호출 시 스프링 컨테이너를 통해 해당 빈을 찾아서 반환)
+//            prototypeBean.addCount();
+//            int count = prototypeBean.getCount();
+//            return count;
+//        }
+
+        //  Provider.get을 통해서도 새로운 프로토타입 빈이 생성된다. 딱 DL기능만 수행하고 있고, 자바 표준이다.
+        // 기능이 단순하기 때문에 단위 테스트를 만들거나 MOCK 코드를 만들기 훨씬 쉬워진다.
+        // 스프링이 아닌 다른 컨테이너에서도 사용이 가능하다.
+       @Autowired
+        private Provider<PrototypeBean> prototypeBeanProvider;
 
         public int logic(){
-            PrototypeBean prototypeBean = prototypeBeanProvider.getObject(); // getObject 하면 이때 찾아서 호출
-            // getObject를 통해서 항상 새로운 프로토타입 빈이 생성됨. Dependency Lookup(getObject호출 시 스프링 컨테이너를 통해 해당 빈을 찾아서 반환)
+            PrototypeBean prototypeBean = prototypeBeanProvider.get();
             prototypeBean.addCount();
             int count = prototypeBean.getCount();
             return count;
